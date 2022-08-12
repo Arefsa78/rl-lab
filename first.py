@@ -8,7 +8,7 @@ from rl.rl import RL
 
 
 
-env = gym.make("LunarLander-v2")
+env = gym.make("LunarLander-v2", render_mode=None)
 
 Data.MIN = env.observation_space.low
 Data.MAX = env.observation_space.high
@@ -29,7 +29,8 @@ step = 0
 while True:
     step += 1
 
-    action = agent.action_index(observation)
+    # action = agent.action_index(observation)
+    action = 1
 
     last_state = observation
     observation, reward, done, info = env.step(action)
@@ -44,8 +45,8 @@ while True:
     
     reward_history.update_step(reward)
 
-    if step % RL.LEARN_AFTER_N_STEP == 0:
-        agent.learn(RL.LEARN_AFTER_N_STEP) 
+    # if step % RL.LEARN_AFTER_N_STEP == 0:
+    #     agent.learn(RL.LEARN_AFTER_N_STEP) 
 
 
     if done:
