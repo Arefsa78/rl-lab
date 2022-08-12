@@ -13,7 +13,7 @@ class Bank:
             pass
         
         if len(self.storage) > Bank.SIZE_LIMIT:
-            self.pop[0]
+            self.storage.pop(0)
         self.storage.append(data)
     
     def get_batch(self, batches=1) -> list[Data]:
