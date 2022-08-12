@@ -8,6 +8,7 @@ class RL:
     GAMMA=0.9
     EPOCHS_PER_MEMORY=10
     LEARN_AFTER_N_STEP= 100
+    SAVE_PER_STEP = 1000
 
     def __init__(self) -> None:
         self.dnn: Dnn = None
@@ -41,4 +42,7 @@ class RL:
     def action_index(self, state):
         action = self.dnn.predict(state)
         return np.where(action == np.amax(action))[1][0]
+    
+    def save(self, step):
+        self.dnn.save(f"rl-model-{step}")
     

@@ -39,3 +39,6 @@ class Dnn:
     def predict(self, x):
         x = x.reshape((1, 8))
         return self.model.predict(x, use_multiprocessing=True, verbose=Dnn.VERBOSE)
+    
+    def save(self, name):
+        self.save(name)

@@ -59,6 +59,9 @@ while True:
         print('\r', end='')
         print(f"step={step}", end='')
     
+    if step % RL.SAVE_PER_STEP == 0:
+        agent.dnn.
+    
     
 
 
