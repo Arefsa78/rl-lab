@@ -41,4 +41,4 @@ class Dnn:
         return self.model.predict(x, use_multiprocessing=True, verbose=Dnn.VERBOSE)
     
     def save(self, name):
-        self.model(name)
+        self.model.save(name)
