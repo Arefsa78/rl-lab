@@ -52,7 +52,7 @@ while True:
         observation, info = env.reset(return_info=True)
         reward_history.update_done()
     
-    if step % History.SAVE_FIG_AFTER_STEPS:
+    if step % History.SAVE_FIG_AFTER_STEPS == 0:
         reward_history.save_fig()    
     
     if step % 10 == 0:
