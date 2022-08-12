@@ -35,8 +35,7 @@ while True:
     print(f"step={step}")
 
     now = time.time()
-    # action = agent.action_index(observation)
-    action = 1
+    action = agent.action_index(observation)
     print(f"ACTION: {time.time() - now}s")
 
 
@@ -47,13 +46,13 @@ while True:
     print(f"STEP: {time.time() - now}s")
 
     now = time.time()
-    # agent.bank.add(
-    #     Data(last_state,
-    #         action, 
-    #         reward,
-    #         done,
-    #         observation)
-    # )
+    agent.bank.add(
+        Data(last_state,
+            action, 
+            reward,
+            done,
+            observation)
+    )
     print(f"BANK: {time.time() - now}s")
 
     
