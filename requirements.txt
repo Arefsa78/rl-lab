@@ -1,16 +1,11 @@
 absl-py==1.2.0
-asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 astunparse==1.6.3
 autopep8==1.6.0
-backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
 box2d-py==2.3.5
 cachetools==5.2.0
 certifi==2022.6.15
 charset-normalizer==2.1.0
-cloudpickle @ file:///home/conda/feedstock_root/build_artifacts/cloudpickle_1653061851209/work
 cycler==0.11.0
-decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
-executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
 flatbuffers==1.12
 fonttools==4.34.4
 gast==0.4.0
@@ -22,41 +17,27 @@ gym==0.25.1
 gym-notices==0.0.7
 h5py==3.7.0
 idna==3.3
-ipython @ file:///opt/conda/conda-bld/ipython_1651600145335/work
-jedi @ file:///tmp/build/80754af9/jedi_1644315229345/work
-keras @ file:///home/conda/feedstock_root/build_artifacts/keras_1652925255303/work/keras-2.9.0-py2.py3-none-any.whl
 Keras-Preprocessing==1.1.2
 kiwisolver==1.4.4
 libclang==14.0.6
 Markdown==3.4.1
 MarkupSafe==2.1.1
 matplotlib==3.5.3
-matplotlib-inline @ file:///tmp/build/80754af9/matplotlib-inline_1628242447089/work
-numpy @ file:///home/conda/feedstock_root/build_artifacts/numpy_1657483876890/work
 oauthlib==3.2.0
 opt-einsum==3.3.0
 packaging==21.3
-parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
-pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
-pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
 Pillow==9.2.0
-prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1633440160888/work
 protobuf==3.19.4
-ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
-pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.9.1
 pygame==2.1.0
 pyglet==1.5.26
-Pygments @ file:///opt/conda/conda-bld/pygments_1644249106324/work
 pyparsing==3.0.9
 python-dateutil==2.8.2
 requests==2.28.1
 requests-oauthlib==1.3.1
 rsa==4.9
-six @ file:///tmp/build/80754af9/six_1644875935023/work
-stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
 tensorboard==2.9.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
@@ -65,9 +46,7 @@ tensorflow-estimator==2.9.0
 tensorflow-io-gcs-filesystem==0.26.0
 termcolor==1.1.0
 toml==0.10.2
-traitlets @ file:///tmp/build/80754af9/traitlets_1636710298902/work
 typing_extensions==4.3.0
 urllib3==1.26.11
-wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
 Werkzeug==2.2.1
 wrapt==1.14.1
