@@ -5,7 +5,9 @@ from rl.data import Data
 from rl.dnn import Dnn
 from rl.history import History, RewardHistory
 from rl.rl import RL
+import time
 
+now = time.time()
 
 
 env = gym.make("LunarLander-v2", render_mode=None)
@@ -25,16 +27,26 @@ agent.bank = Bank()
 # History
 reward_history = RewardHistory()
 
+print(f"SETUP: {time.time() - now}s")
+
 step = 0
 while True:
     step += 1
+    print(f"step={step}")
 
+    now = time.time()
     # action = agent.action_index(observation)
     action = 1
+    print(f"ACTION: {time.time() - now}s")
+
 
     last_state = observation
-    observation, reward, done, info = env.step(action)
 
+    now = time.time()
+    observation, reward, done, info = env.step(action)
+    print(f"STEP: {time.time() - now}s")
+
+    now = time.time()
     # agent.bank.add(
     #     Data(last_state,
     #         action, 
@@ -42,26 +54,32 @@ while True:
     #         done,
     #         observation)
     # )
+    print(f"BANK: {time.time() - now}s")
+
     
     reward_history.update_step(reward)
 
-    # if step % RL.LEARN_AFTER_N_STEP == 0:
-    #     agent.learn(RL.LEARN_AFTER_N_STEP) 
-
+    if step % RL.LEARN_AFTER_N_STEP == 0:
+        now = time.time()
+        agent.learn(RL.LEARN_AFTER_N_STEP) 
+        print(f"LEARN: {time.time() - now}s")
 
     if done:
+        now = time.time()
         observation, info = env.reset(return_info=True)
         reward_history.update_done()
-    
+        print(f"DONE: {time.time() - now}s")
+
     if step % History.SAVE_FIG_AFTER_STEPS:
+        now = time.time()
         reward_history.save_fig()    
-    
-    if step % 10 == 0:
-        print('\r', end='')
-        print(f"step={step}", end='')
+        print(f"HISTORY: {time.time() - now}s")
+
     
     if step % RL.SAVE_PER_STEP == 0:
+        now = time.time()
         agent.save(step)
+        print(f"SAVE: {time.time() - now}s")
     
     
 
