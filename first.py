@@ -35,13 +35,13 @@ while True:
     last_state = observation
     observation, reward, done, info = env.step(action)
 
-    agent.bank.add(
-        Data(last_state,
-            action, 
-            reward,
-            done,
-            observation)
-    )
+    # agent.bank.add(
+    #     Data(last_state,
+    #         action, 
+    #         reward,
+    #         done,
+    #         observation)
+    # )
     
     reward_history.update_step(reward)
 
