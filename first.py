@@ -70,7 +70,7 @@ while True:
         reward_history.update_done()
         print(f"DONE: {time.time() - now}s")
 
-    if step % History.SAVE_FIG_AFTER_STEPS:
+    if step % History.SAVE_FIG_AFTER_STEPS == 0:
         now = time.time()
         reward_history.save_fig()    
         print(f"HISTORY: {time.time() - now}s")
