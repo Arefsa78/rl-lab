@@ -55,6 +55,10 @@ while True:
     if step % History.SAVE_FIG_AFTER_STEPS:
         reward_history.save_fig()    
     
+    if step % 100 == 0:
+        print('\r', end='')
+        print(f"step={step}", end='')
+    
     
 
 

@@ -7,6 +7,7 @@ import numpy as np
 
 
 class Dnn:
+    VERBOSE = False
     def __init__(self, input_shape: int, output_shape: int, hidden_layer_size: list, activisions: list, name="MyDnn") -> None:
         self.inputs = layers.Input(shape=(input_shape, ))
 
@@ -33,8 +34,8 @@ class Dnn:
         )
 
     def learn(self, batch_x, batch_y, epochs):
-        return self.model.fit(batch_x, batch_y, epochs=epochs)
+        return self.model.fit(batch_x, batch_y, epochs=epochs, use_multiprocessing=True,verbose=Dnn.VERBOSE)
 
     def predict(self, x):
         x = x.reshape((1, 8))
-        return self.model.predict(x, use_multiprocessing=True)
+        return self.model.predict(x, use_multiprocessing=True, verbose=Dnn.VERBOSE)

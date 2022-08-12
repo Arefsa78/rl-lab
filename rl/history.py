@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 class History:
-    SAVE_FIG_AFTER_STEPS = 10
+    SAVE_FIG_AFTER_STEPS = 1000
 
     def __init__(self) -> None:
         self.all_data = []
