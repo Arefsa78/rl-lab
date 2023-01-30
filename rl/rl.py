@@ -8,13 +8,13 @@ from keras.models import clone_model
 
 class RL:
     GAMMA=0.9
-    EPOCHS_PER_MEMORY=10
+    EPOCHS_PER_MEMORY=64
     LEARN_AFTER_N_STEP= 128
-    BATCH_SIZE = 32
-    SAVE_PER_STEP = 1000
-    RANDOMNESS_PARAM = 0.3
-    RANDOMNESS_UNTIL = 5000
-    UPDATE_TARGET = 500
+    BATCH_SIZE = 128
+    SAVE_PER_STEP = 10000
+    RANDOMNESS_PARAM = 0.4
+    RANDOMNESS_UNTIL = 10000
+    UPDATE_TARGET = 1000
 
     def __init__(self, load_dir:str="") -> None:
         if len(load_dir) > 0:

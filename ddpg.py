@@ -43,7 +43,7 @@ class DDPG:
     ACTOR_LR = 0.001
 
     TAU = 0.005
-    GAMMA = 0.9
+    GAMMA = 0.99
 
     STD_DEV = 0.2
 
@@ -65,10 +65,10 @@ class DDPG:
             return
         data_batch = self.bank.get_batch(DDPG.BATCH_SIZE)
 
-        state_batch = [data.state for data in data_batch]
-        action_batch = [data.action for data in data_batch]
-        reward_batch = [data.reward for data in data_batch]
-        next_state_batch = [data.next_state for data in data_batch]
+        state_batch = np.array([data.state for data in data_batch])
+        action_batch = np.array([data.action for data in data_batch])
+        reward_batch = np.array([data.reward for data in data_batch])
+        next_state_batch = np.array([data.next_state for data in data_batch])
 
         with tf.GradientTape() as tape:
             target_action = self.target_actor(next_state_batch, training=True)
@@ -77,7 +77,7 @@ class DDPG:
             critic_value = self.critic([state_batch, action_batch], training=True)
             critic_loss = tf.math.reduce_mean(tf.math.square(y - critic_value))
 
-        critic_grad = tape.gradient(critic_loss, self.critic.trainable_variable)
+        critic_grad = tape.gradient(critic_loss, self.critic.trainable_variables)
         self.critic_optimizer.apply_gradients(
             zip(critic_grad, self.critic.trainable_variables)
         )
@@ -93,6 +93,7 @@ class DDPG:
             zip(actor_grad, self.actor.trainable_variables)
         )
 
+    @tf.function
     def update_target(self):
         for (a, b) in zip(self.target_critic.variables, self.critic.variables):
             a.assign(b * DDPG.TAU + a * (1 - DDPG.TAU))

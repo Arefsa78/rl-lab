@@ -1,3 +1,7 @@
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 from time import sleep
 import gym
 from rl.bank import Bank
@@ -10,8 +14,11 @@ from rl.rl import RL
 import sys
 import numpy as np
 
+def config():
+    pass
+
 def learn(load_number=None):
-    env = gym.make("LunarLander-v2", render_mode="human", enable_wind=False)
+    env = gym.make("LunarLander-v2",  enable_wind=False)
 
     Data.MIN = env.observation_space.low
     Data.MAX = env.observation_space.high
@@ -24,7 +31,7 @@ def learn(load_number=None):
     if load_number:
         agent.load(f"saved-models/rl-model-{load_number}/")
     else:
-        agent.online_network = Dnn(8, 4, [64], ['relu', 'relu'],"rl")
+        agent.online_network = Dnn(8, 4, [32, 64, 32], ['relu', 'relu', 'relu', 'relu'],"rl")
         agent.online_network.compile()
         
     agent.update_target()
@@ -127,21 +134,5 @@ def random_test():
         
     env.close()
 
-if __name__ == "__main__":
-    print(sys.argv)
-    if len(sys.argv) > 1:
-        args = sys.argv[1:]
-        if len(args) == 1:
-            if args[0] == "random":
-                random_test()
-            elif args[0] == "learn":
-                learn()
-        elif len(args) == 2:
-            if args[0] == "test":
-                test(int(args[1]))
-            elif args[0] == "learn":
-                learn(int(args[1]))
-    else:
-        learn()
 
 

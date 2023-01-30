@@ -8,7 +8,7 @@ if len(sys.argv) >= 2:
 import gym
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import layers, Model
+from keras import layers, Model
 from keras.models import load_model
 
 import matplotlib.pyplot as plt
@@ -17,9 +17,9 @@ from ddpg import OUActionNoise, DDPG
 from rl.bank import Bank
 from rl.data import Data
 
-def learn(resume=None):
-    env = gym.make("LunarLander-v2",continuous = True,render_mode="human",  enable_wind=False)
-    # env = gym.make("LunarLander-v2", continuous=True, enable_wind=False)
+def learn():
+    # env = gym.make("Pendulum-v1",render_mode="human",  enable_wind=False)
+    env = gym.make("Pendulum-v1")
 
 
     def create_actor():
@@ -28,9 +28,10 @@ def learn(resume=None):
         inputs = layers.Input(shape=(env.observation_space.shape[0],))
         out = layers.Dense(256, activation='relu')(inputs)
         out = layers.Dense(256, activation='relu')(out)
-        outputs = layers.Dense(2, activation='tanh', kernel_initializer=last_init)(out)
+        outputs = layers.Dense(1, activation='tanh', kernel_initializer=last_init)(out)
 
-        outputs = outputs * env.observation_space.high[0]
+        outputs = outputs * env.action_space.high[0]
+
         model = Model(inputs, outputs)
         return model
 
@@ -40,7 +41,7 @@ def learn(resume=None):
         state_out = layers.Dense(16, activation='relu')(state_input)
         state_out = layers.Dense(32, activation='relu')(state_out)
 
-        action_input = layers.Input(shape=(2,))
+        action_input = layers.Input(shape=(1,))
         action_out = layers.Dense(32, activation='relu')(action_input)
 
         concat = layers.Concatenate()([state_out, action_out])
@@ -52,15 +53,16 @@ def learn(resume=None):
         model = Model([state_input, action_input], outputs)
         return model
 
-    def policy(state, model: Model, noise_object):
-        sampled_actions = tf.squeeze(model(state))
+
+    def policy(state, actor: Model, noise_object):
+        sampled_actions = tf.squeeze(actor(state))
         noise = noise_object()
 
         sampled_actions = sampled_actions.numpy() + noise
 
         legal_action = np.clip(sampled_actions, env.action_space.low[0], env.action_space.high[0])
 
-        return np.squeeze(legal_action)
+        return [np.squeeze(legal_action)]
 
 
     Data.MIN = env.observation_space.low
@@ -68,25 +70,14 @@ def learn(resume=None):
 
     noise_obj = OUActionNoise(mean=np.zeros(1), std_deviation=float(DDPG.STD_DEV) * np.ones(1))
 
-    if resume is None:
-        actor = create_actor()
-        critic = create_critic()
+    actor = create_actor()
+    critic = create_critic()
 
-        target_actor = create_actor()
-        target_critic = create_critic()
+    target_actor = create_actor()
+    target_critic = create_critic()
 
-        target_actor.set_weights(actor.get_weights())
-        target_critic.set_weights(critic.get_weights())
-    else:
-        actor = load_model(f"saved-models/model-actor-{resume}")
-        critic = load_model(f"saved-models/model-critic-{resume}")
-
-        target_actor = create_actor()
-        target_critic = create_critic()
-
-        target_actor.set_weights(actor.get_weights())
-        target_critic.set_weights(critic.get_weights())
-        resume += 1
+    target_actor.set_weights(actor.get_weights())
+    target_critic.set_weights(critic.get_weights())
 
     # Agent
     agent = DDPG(actor, critic, target_actor, target_critic)
@@ -96,10 +87,7 @@ def learn(resume=None):
     episode_reward_list = []
     avg_reward_list = []
 
-    rng = range(100000)
-    if resume is not None:
-        rng = range(resume, 100000+ resume)
-    for ep in rng:
+    for ep in range(100000):
         observation, info = env.reset(return_info=True)
         episode_reward = 0
 
@@ -122,13 +110,12 @@ def learn(resume=None):
             )
 
             episode_reward += reward
-
             agent.learn()
             agent.update_target()
 
             if done:
                 break
-            print("\r", end='')
+            # print("\r", end='')
 
         episode_reward_list.append(episode_reward)
         avg_reward = np.mean(episode_reward_list[-40:])
@@ -145,7 +132,7 @@ def learn(resume=None):
     env.close()
 
 def test(test_number):
-    env = gym.make("LunarLander-v2",continuous=True, render_mode='human')
+    env = gym.make("Pendulum-v1", render_mode='human')
 
     Data.MIN = env.observation_space.low
     Data.MAX = env.observation_space.high
@@ -153,7 +140,7 @@ def test(test_number):
     def policy(state, actor: Model):
         sampled_actions = tf.squeeze(actor(state))
         # legal_action = np.clip(sampled_actions, -1., +1)
-        return np.squeeze(sampled_actions)
+        return [np.squeeze(sampled_actions)]
         # return [np.array([0, 0.6])]
 
     actor = load_model(f"saved-models/model-actor-{test_number}")
@@ -164,7 +151,7 @@ def test(test_number):
             action = policy(np.array([observation]), actor)
             print(action)
             last_state = observation
-            observation, reward, done, info = env.step(action)
+            observation, reward, done, info = env.step(action[0])
 
             if done:
                 break
@@ -176,11 +163,7 @@ if __name__ == "__main__":
     print(sys.argv)
     print(len(sys.argv))
     if len(sys.argv) >= 2:
-        n = int(sys.argv[1])
-        if n > 0:
-            test(n)
-        else:
-            learn(-n)
+        test(int(sys.argv[1]))
         exit()
     learn()
 

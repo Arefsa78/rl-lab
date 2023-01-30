@@ -6,13 +6,13 @@ class Data:
     MIN = None
 
     def __init__(self, state, action, reward, done, next_state):
-        self.state = np.copy(state)
+        self.state = state
         self.reward = reward
         self.done = done
         self.action = action
-        self.next_state = np.copy(next_state)
+        self.next_state = next_state
 
-        self.normalize()
+        # self.normalize()
 
     def x(self):
         return self.state
@@ -38,7 +38,6 @@ class Data:
 
         self.reward += 100
         self.reward /= 200
-
     def __repr__(self) -> str:
         return f"state: {self.state}\n" \
             f"reward: {self.reward}\n" \
